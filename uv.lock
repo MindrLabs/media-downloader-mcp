@@ -1038,13 +1038,14 @@ wheels = [
 
 [[package]]
 name = "media-downloader-mcp"
-version = "0.1.1"
+version = "0.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "model-compose" },
     { name = "playwright" },
     { name = "pysubs2", version = "1.8.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "pysubs2", version = "1.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "webvtt-py" },
     { name = "yt-dlp" },
 ]
 
@@ -1057,9 +1058,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "model-compose", specifier = ">=0.4.118" },
+    { name = "model-compose", specifier = ">=0.4.119" },
     { name = "playwright" },
     { name = "pysubs2" },
+    { name = "webvtt-py" },
     { name = "yt-dlp" },
 ]
 
@@ -1072,7 +1074,7 @@ dev = [
 
 [[package]]
 name = "model-compose"
-version = "0.4.118"
+version = "0.4.119"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -1095,9 +1097,9 @@ dependencies = [
     { name = "websockets", version = "16.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "websockets", version = "17.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4f/14/02a26ada2d318e8e0b814621180edeac7e231e56736572df5d0d55ac0d29/model_compose-0.4.118.tar.gz", hash = "sha256:1b984b63221a830f57fb2a0313ec412ccccfee0bad1f8a5cb8406e2416e3530f", size = 1260406, upload-time = "2026-10-17T16:01:35.645Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/97/15b64d383b81c9d4289b37984517be68fe199245cf9792f6e3e1f3b10d23/model_compose-0.4.119.tar.gz", hash = "sha256:ba1ff9c19394d6af9490b86d28b137bafb4bd82fc6434d62433959e91a0a7278", size = 1274455, upload-time = "2026-10-20T05:07:30.478Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/49/8e/11b50844d101f12e27d5c0671857c4825403291401d46dcbe62af369c337/model_compose-0.4.118-py3-none-any.whl", hash = "sha256:cfe359295ceeba1ad67532e498338da47a0837ecc21aaf6e32598e9aa57a7c02", size = 2247022, upload-time = "2026-10-17T16:01:32.92Z" },
+    { url = "https://files.pythonhosted.org/packages/b2/81/1cc5f5166943e2f893cf795ac326ab1b43cd33dc54974203ce9487bb7079/model_compose-0.4.119-py3-none-any.whl", hash = "sha256:6b6f278dc6136903a68178f71ce5e0f56d3d7f46b89f42f35e03837f5f5fb957", size = 2270951, upload-time = "2026-10-20T05:07:28.19Z" },
 ]
 
 [[package]]
@@ -2879,6 +2881,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/ed/b8/7eb904583ea2090b329f50487e6f8dc58eb558712b9f3c16f289f0be668e/websockets-17.3-pp312-pypy312_pp80-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:4e7b5d23ef144b32645d97bd99f382c4394c443395f45fe1576786838d26e308", size = 217828, upload-time = "2026-10-19T16:58:01.822Z" },
     { url = "https://files.pythonhosted.org/packages/79/36/f54b4a1cd9456ca0a65a76d77d181621433793aca633dfeed214748ff4f0/websockets-17.3-pp312-pypy312_pp80-win_amd64.whl", hash = "sha256:13eace1b315345ebac5b27821f5dcce24e5cf9976ab18f79e00a59bdd67e5d19", size = 306301, upload-time = "2026-10-19T16:58:03.161Z" },
     { url = "https://files.pythonhosted.org/packages/d7/b0/3f01fcb3406662f6deb1e3e72b34dd0979e993991c0b7435a9e12bc14f02/websockets-17.3-py3-none-any.whl", hash = "sha256:dc2b495a92b3971966bf102e73589f950db3ec1ca6713265355ce7771d97b199", size = 212375, upload-time = "2026-10-19T16:58:04.483Z" },
+]
+
+[[package]]
+name = "webvtt-py"
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5e/f6/7c9c964681fb148e0293e6860108d378e09ccab2218f9063fd3eb87f840a/webvtt-py-0.5.1.tar.gz", hash = "sha256:2040dd325277ddadc1e0c6cc66cbc4a1d9b6b49b24c57a0c3364374c3e8a3dc1", size = 55128, upload-time = "2024-05-30T13:40:17.189Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f3/ed/aad7e0f5a462d679f7b4d2e0d8502c3096740c883b5bbed5103146480937/webvtt_py-0.5.1-py3-none-any.whl", hash = "sha256:9d517d286cfe7fc7825e9d4e2079647ce32f5678eb58e39ef544ffbb932610b7", size = 19802, upload-time = "2024-05-30T13:40:14.661Z" },
 ]
 
 [[package]]
