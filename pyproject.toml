@@ -1,0 +1,31 @@
+[project]
+name = "media-downloader-mcp"
+version = "0.1.0"
+description = "Let Claude and other MCP clients download videos, audio and subtitles from any site yt-dlp supports."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = [
+    "model-compose>=0.4.118",
+    "playwright",
+    "pysubs2",
+    "yt-dlp",
+]
+
+[dependency-groups]
+dev = [
+    "mcp",
+    "pytest",
+    "ruff",
+]
+
+[project.scripts]
+media-downloader-mcp = "media_downloader_mcp:main"
+
+[project.urls]
+Repository = "https://github.com/MindrLabs/media-downloader-mcp"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

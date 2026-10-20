@@ -1,0 +1,257 @@
+controller:
+  name: media-downloader-mcp
+  adapter:
+    type: mcp-server
+    transport: stdio
+
+workflows:
+  - id: download-media
+    name: download_media
+    title: Download a video or its audio
+    description: >
+      Download a video, or only its audio track, from any site yt-dlp
+      supports such as YouTube, Vimeo or SoundCloud to the local download
+      directory in the best available quality and return where the file
+      was saved.
+      When the site needs a signed-in session, a browser window opens and
+      the workflow pauses until the user signs in and it is resumed.
+    jobs:
+      - id: download
+        component: media-downloader
+        action: download
+        input:
+          url: ${input.url @(description URL of a page that yt-dlp supports)}
+          format: ${input.format as select/mp4,webm,mkv,mp3,m4a,opus,flac,wav | mp4 @(description mp4, webm or mkv saves the video and mp3, m4a, opus, flac or wav saves only the audio)}
+        on_error:
+          output:
+            error: ${error.message}
+
+      - id: check-download
+        type: if
+        input: ${jobs.download.output.error}
+        conditions:
+          - operator: eq
+            value: null
+            if_true: store
+          - operator: match
+            value: '(?is).*(--cookies|sign in|log in|logged.in|login|members.only|private video|age.restricted)'
+            if_true: download-with-session
+        otherwise: retry-download
+        depends_on: [ download ]
+
+      - id: store
+        component: media-store
+        input:
+          extension: ${input.format | mp4}
+          source: ${jobs.download.output}
+        output:
+          file_url: ${output.url @(description file:// URL of the saved file)}
+          size: ${output.size as integer @(description File size in bytes)}
+
+      - id: retry-download
+        type: pipeline
+        input:
+          url: ${input.url}
+          format: ${input.format | mp4}
+        steps:
+          - component: media-downloader
+            action: download
+            input:
+              url: ${input.url}
+              format: ${input.format}
+
+          - component: media-store
+            input:
+              extension: ${input.format}
+              source: ${output}
+        output:
+          file_url: ${output.url}
+          size: ${output.size as integer}
+
+      - id: download-with-session
+        type: pipeline
+        input:
+          url: ${input.url}
+          format: ${input.format | mp4}
+        steps:
+          - component: browser
+            action: navigate
+            input:
+              url: ${input.url}
+
+          - component: browser
+            action: get-current-url
+            interrupt:
+              before:
+                message: >
+                  This site needs a signed-in session. Sign in to it in the
+                  browser window that just opened, then call resume_workflow
+                  with this task_id and job_id to download with that session.
+
+          - component: browser
+            action: get-cookies
+            input:
+              urls: [ "${input.url}", "${output}" ]
+
+          - component: media-downloader
+            action: download-with-cookies
+            input:
+              url: ${input.url}
+              format: ${input.format}
+              cookies: ${output}
+
+          - component: media-store
+            input:
+              extension: ${input.format}
+              source: ${output}
+        output:
+          file_url: ${output.url}
+          size: ${output.size as integer}
+
+  - id: fetch-subtitles
+    name: fetch_subtitles
+    title: Fetch the subtitles of a video
+    description: >
+      Fetch the subtitles of a video from any site yt-dlp supports,
+      falling back to auto-generated captions, and return them as plain
+      text. When the site needs a signed-in session, a browser window
+      opens and the workflow pauses until the user signs in and it is
+      resumed.
+    jobs:
+      - id: fetch
+        component: subtitle-loader
+        action: fetch
+        input:
+          url: ${input.url @(description URL of a page that yt-dlp supports)}
+          language: ${input.language | en @(description Subtitle language as an ISO 639-1 code such as en or ko)}
+        on_error:
+          output:
+            error: ${error.message}
+
+      - id: check-fetch
+        type: if
+        input: ${jobs.fetch.output.error}
+        conditions:
+          - operator: eq
+            value: null
+            if_true: pick-subtitles
+          - operator: match
+            value: '(?is).*(--cookies|sign in|log in|logged.in|login|members.only|private video|age.restricted)'
+            if_true: fetch-with-session
+        otherwise: retry-fetch
+        depends_on: [ fetch ]
+
+      - id: pick-subtitles
+        type: filter
+        input: ${jobs.fetch.output}
+        output:
+          language: ${output[0].language @(description Language of the returned subtitles)}
+          is_auto_generated: ${output[0].is_auto_generated as boolean @(description Whether the subtitles are auto-generated captions)}
+          text: ${output[0].full_text as text @(description Full subtitle text)}
+
+      - id: retry-fetch
+        component: subtitle-loader
+        action: fetch
+        input:
+          url: ${input.url}
+          language: ${input.language | en}
+        output:
+          language: ${output[0].language}
+          is_auto_generated: ${output[0].is_auto_generated as boolean}
+          text: ${output[0].full_text as text}
+
+      - id: fetch-with-session
+        type: pipeline
+        input:
+          url: ${input.url}
+          language: ${input.language | en}
+        steps:
+          - component: browser
+            action: navigate
+            input:
+              url: ${input.url}
+
+          - component: browser
+            action: get-current-url
+            interrupt:
+              before:
+                message: >
+                  This site needs a signed-in session. Sign in to it in the
+                  browser window that just opened, then call resume_workflow
+                  with this task_id and job_id to fetch with that session.
+
+          - component: browser
+            action: get-cookies
+            input:
+              urls: [ "${input.url}", "${output}" ]
+
+          - component: subtitle-loader
+            action: fetch-with-cookies
+            input:
+              url: ${input.url}
+              language: ${input.language}
+              cookies: ${output}
+        output:
+          language: ${output[0].language}
+          is_auto_generated: ${output[0].is_auto_generated as boolean}
+          text: ${output[0].full_text as text}
+
+components:
+  - id: media-downloader
+    type: media-downloader
+    driver: ytdlp
+    actions:
+      - id: download
+        url: ${input.url}
+        format: ${input.format}
+
+      - id: download-with-cookies
+        url: ${input.url}
+        format: ${input.format}
+        cookies: ${input.cookies}
+
+  - id: subtitle-loader
+    type: subtitle-loader
+    driver: ytdlp
+    actions:
+      - id: fetch
+        url: ${input.url}
+        languages: ${input.language}
+        format: srt
+
+      - id: fetch-with-cookies
+        url: ${input.url}
+        languages: ${input.language}
+        format: srt
+        cookies: ${input.cookies}
+
+  - id: browser
+    type: web-browser
+    driver: playwright
+    browser: chromium
+    channel: ${env.MEDIA_DOWNLOAD_BROWSER_CHANNEL | chrome}
+    headless: false
+    persistent_dir: ${env.MEDIA_DOWNLOAD_BROWSER_PROFILE | ""}
+    args: [ --disable-blink-features=AutomationControlled ]
+    actions:
+      - id: navigate
+        method: navigate
+        url: ${input.url}
+        wait_until: domcontentloaded
+
+      - id: get-current-url
+        method: evaluate
+        expression: location.href
+
+      - id: get-cookies
+        method: get-cookies
+        urls: ${input.urls}
+
+  - id: media-store
+    type: file-store
+    driver: local
+    base_path: ${env.MEDIA_DOWNLOAD_DIRECTORY | ~/Downloads/media}
+    action:
+      method: put
+      path: ${context.run_id}.${input.extension}
+      source: ${input.source}
