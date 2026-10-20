@@ -6,7 +6,7 @@
 
 ## 快速开始
 
-`PATH` 中需要有 [uv](https://docs.astral.sh/uv/)、[Git](https://git-scm.com/) 和 [ffmpeg](https://ffmpeg.org/)，下载 YouTube 还需要 `PATH` 中有 [Deno](https://deno.com/) 等 JS 运行时，需要登录的网站还要求安装 Google Chrome。
+`PATH` 中需要有 [uv](https://docs.astral.sh/uv/) 和 [ffmpeg](https://ffmpeg.org/)，下载 YouTube 还需要 `PATH` 中有 [Deno](https://deno.com/) 等 JS 运行时，需要登录的网站还要求安装 Google Chrome。
 
 在 MCP 客户端配置中注册服务器。
 
@@ -15,7 +15,7 @@
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp", "media-downloader-mcp"],
+      "args": ["media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@
 在 Claude Code 中用一条命令即可注册。
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx media-downloader-mcp
 ```
 
 ## 流程
@@ -69,3 +69,5 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 ## 注意
 
 许多网站在服务条款中限制下载内容，受 DRM 保护的内容也无法下载。请查看各网站的条款，只用于你拥有权利或被允许下载的内容。本项目与 YouTube 及其他任何受支持的网站均无关联。
+
+<!-- mcp-name: io.github.MindrLabs/media-downloader-mcp -->

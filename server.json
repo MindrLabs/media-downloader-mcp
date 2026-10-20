@@ -1,0 +1,41 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.MindrLabs/media-downloader-mcp",
+  "description": "Download videos, audio and subtitles from any site yt-dlp supports.",
+  "repository": {
+    "url": "https://github.com/MindrLabs/media-downloader-mcp",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "media-downloader-mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "MEDIA_DOWNLOAD_DIRECTORY",
+          "description": "Where files are saved",
+          "isRequired": false,
+          "format": "filepath",
+          "default": "~/Downloads/media"
+        },
+        {
+          "name": "MEDIA_DOWNLOAD_BROWSER_PROFILE",
+          "description": "Absolute path of a browser profile directory that keeps you signed in",
+          "isRequired": false,
+          "format": "filepath"
+        },
+        {
+          "name": "MEDIA_DOWNLOAD_BROWSER_CHANNEL",
+          "description": "Browser to open for sign-in",
+          "isRequired": false,
+          "default": "chrome"
+        }
+      ]
+    }
+  ]
+}

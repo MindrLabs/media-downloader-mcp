@@ -6,7 +6,7 @@
 
 ## 빠른 시작
 
-[uv](https://docs.astral.sh/uv/), [Git](https://git-scm.com/), [ffmpeg](https://ffmpeg.org/)이 `PATH`에 있어야 하고, YouTube를 받으려면 [Deno](https://deno.com/) 같은 JS 런타임(Runtime)도 `PATH`에, 로그인이 필요한 사이트를 쓰려면 Google Chrome도 설치돼 있어야 한다.
+[uv](https://docs.astral.sh/uv/)와 [ffmpeg](https://ffmpeg.org/)이 `PATH`에 있어야 하고, YouTube를 받으려면 [Deno](https://deno.com/) 같은 JS 런타임(Runtime)도 `PATH`에, 로그인이 필요한 사이트를 쓰려면 Google Chrome도 설치돼 있어야 한다.
 
 MCP 클라이언트 설정에 서버를 등록한다.
 
@@ -15,7 +15,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp", "media-downloader-mcp"],
+      "args": ["media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
 Claude Code에서는 명령 한 줄로 등록한다.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx media-downloader-mcp
 ```
 
 ## 흐름
@@ -69,3 +69,5 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 ## 주의
 
 많은 사이트가 서비스 약관으로 콘텐츠 다운로드를 제한하고, DRM이 걸린 콘텐츠는 받을 수 없다. 사이트 약관을 확인하고 본인이 권리를 가졌거나 다운로드가 허용된 콘텐츠에만 쓴다. 이 프로젝트는 YouTube를 비롯해 지원하는 어떤 사이트와도 제휴 관계가 없다.
+
+<!-- mcp-name: io.github.MindrLabs/media-downloader-mcp -->
