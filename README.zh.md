@@ -15,7 +15,7 @@
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@
 在 Claude Code 中用一条命令即可注册。
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
 ```
 
 ## 流程
@@ -48,8 +48,8 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 
 | 工具 | 输入 | 输出 |
 | :---: | --- | --- |
-| `download_media` | `url`、`format`（视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav`，默认 `mp4`） | `file_url`、`size` |
-| `fetch_subtitles` | `url`、`language`（ISO 639-1，默认 `en`） | `language`、`is_auto_generated`、`text` |
+| `download_media` | `url`、`format`（视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav`，默认 `mp4`） | `file_url` |
+| `fetch_subtitles` | `url`、`language`（ISO 639-1，默认 `en`） | `text` |
 | `resume_workflow` | `task_id`、`job_id`、`run_id`、`answer` | 恢复的工具的输出 |
 
 文件以 `<run_id>.<扩展名>` 的名字保存在 `MEDIA_DOWNLOAD_DIRECTORY`（默认 `~/Downloads/media`）中，工具只返回 `file://` URL，不返回文件内容。

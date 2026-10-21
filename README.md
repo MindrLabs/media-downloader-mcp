@@ -15,7 +15,7 @@ Register the server in your MCP client config.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ Register the server in your MCP client config.
 In Claude Code, one command registers it.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
 ```
 
 ## Flow
@@ -48,8 +48,8 @@ MCP client ──stdio──> model-compose (mcp-server controller)
 
 | Tool | Input | Output |
 | :---: | --- | --- |
-| `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url`, `size` |
-| `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `language`, `is_auto_generated`, `text` |
+| `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url` |
+| `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `text` |
 | `resume_workflow` | `task_id`, `job_id`, `run_id`, `answer` | Output of the resumed tool |
 
 Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<run_id>.<extension>`, and the tools return only a `file://` URL instead of the file contents.

@@ -15,7 +15,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
 Claude Code에서는 명령 한 줄로 등록한다.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
 ```
 
 ## 흐름
@@ -48,8 +48,8 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 
 | 도구 | 입력 | 출력 |
 | :---: | --- | --- |
-| `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url`, `size` |
-| `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `language`, `is_auto_generated`, `text` |
+| `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url` |
+| `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `text` |
 | `resume_workflow` | `task_id`, `job_id`, `run_id`, `answer` | 재개한 도구의 출력 |
 
 파일은 `MEDIA_DOWNLOAD_DIRECTORY`(기본 `~/Downloads/media`)에 `<run_id>.<확장자>` 이름으로 저장되고, 도구는 파일 내용 대신 `file://` URL만 돌려준다.
