@@ -15,7 +15,7 @@
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@
 在 Claude Code 中用一条命令即可注册。
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1 media-downloader-mcp
 ```
 
 ## 流程
@@ -50,7 +50,7 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 | :---: | --- | --- |
 | `download_media` | `url`、`format`（视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav`，默认 `mp4`） | `file_url` |
 | `fetch_subtitles` | `url`、`language`（ISO 639-1，默认 `en`） | `text` |
-| `resume_workflow` | `task_id`、`job_id`、`run_id`、`answer` | 恢复的工具的输出 |
+| `resume_workflow` | `task_id`、`answer` | 恢复的工具的输出 |
 
 文件以 `<run_id>.<扩展名>` 的名字保存在 `MEDIA_DOWNLOAD_DIRECTORY`（默认 `~/Downloads/media`）中，工具只返回 `file://` URL，不返回文件内容。
 
@@ -64,7 +64,7 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 
 ## 需要登录的网站
 
-工具会先在不打开浏览器的情况下下载，如果因需要登录的错误而失败，就在 Chrome 窗口中打开该 URL，并返回 `status: interrupted` 响应后暂停。其他错误会再尝试一次，如果仍然失败就返回该错误。你在该窗口登录后，客户端用响应中的 `task_id` 和 `interrupt.job_id` 调用 `resume_workflow`，工具就会只收集该浏览器中属于所请求 URL 和登录后停留页面的 Cookie 并重新下载。
+工具会先在不打开浏览器的情况下下载，如果因需要登录的错误而失败，就在 Chrome 窗口中打开该 URL，并返回 `status: interrupted` 响应后暂停。其他错误会再尝试一次，如果仍然失败就返回该错误。你在该窗口登录后，客户端用响应中的 `task_id` 和以响应中 `interrupt` 列表的 `id` 为键的 `answer`（如 `{"<id>": null}`）调用 `resume_workflow`，工具就会只收集该浏览器中属于所请求 URL 和登录后停留页面的 Cookie 并重新下载。
 
 ## 注意
 

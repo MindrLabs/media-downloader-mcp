@@ -15,7 +15,7 @@ Register the server in your MCP client config.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ Register the server in your MCP client config.
 In Claude Code, one command registers it.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1 media-downloader-mcp
 ```
 
 ## Flow
@@ -50,7 +50,7 @@ MCP client ──stdio──> model-compose (mcp-server controller)
 | :---: | --- | --- |
 | `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `text` |
-| `resume_workflow` | `task_id`, `job_id`, `run_id`, `answer` | Output of the resumed tool |
+| `resume_workflow` | `task_id`, `answer` | Output of the resumed tool |
 
 Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<run_id>.<extension>`, and the tools return only a `file://` URL instead of the file contents.
 
@@ -64,7 +64,7 @@ Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<
 
 ## Sites That Need Signing In
 
-Each tool first tries without a browser, and if that fails with an error saying you need to sign in, it opens the URL in a Chrome window and stops with a `status: interrupted` response. Any other error gets one more try, and if that also fails, the error is returned. After you sign in there, the client calls `resume_workflow` with the response's `task_id` and `interrupt.job_id`, and the tool retries with only the cookies that browser holds for the requested URL and the page you end on after signing in.
+Each tool first tries without a browser, and if that fails with an error saying you need to sign in, it opens the URL in a Chrome window and stops with a `status: interrupted` response. Any other error gets one more try, and if that also fails, the error is returned. After you sign in there, the client calls `resume_workflow` with the response's `task_id` and an `answer` of `{"<id>": null}`, where `<id>` is the `id` in the response's `interrupt` list, and the tool retries with only the cookies that browser holds for the requested URL and the page you end on after signing in.
 
 ## Notice
 

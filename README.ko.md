@@ -15,7 +15,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
 Claude Code에서는 명령 한 줄로 등록한다.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.0 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1 media-downloader-mcp
 ```
 
 ## 흐름
@@ -50,7 +50,7 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 | :---: | --- | --- |
 | `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `text` |
-| `resume_workflow` | `task_id`, `job_id`, `run_id`, `answer` | 재개한 도구의 출력 |
+| `resume_workflow` | `task_id`, `answer` | 재개한 도구의 출력 |
 
 파일은 `MEDIA_DOWNLOAD_DIRECTORY`(기본 `~/Downloads/media`)에 `<run_id>.<확장자>` 이름으로 저장되고, 도구는 파일 내용 대신 `file://` URL만 돌려준다.
 
@@ -64,7 +64,7 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 
 ## 로그인이 필요한 사이트
 
-도구는 먼저 브라우저 없이 받아 보고, 로그인이 필요하다는 에러(Error)로 실패하면 Chrome 창에 그 URL을 열고 `status: interrupted` 응답과 함께 멈춘다. 다른 에러면 한 번 더 시도하고 또 실패하면 그 에러를 돌려준다. 사용자가 그 창에서 로그인한 뒤 클라이언트가 응답의 `task_id`와 `interrupt.job_id`로 `resume_workflow`를 부르면 요청한 URL과 로그인 뒤 머문 페이지의 쿠키(Cookie)만 그 브라우저에서 모아 다시 받는다.
+도구는 먼저 브라우저 없이 받아 보고, 로그인이 필요하다는 에러(Error)로 실패하면 Chrome 창에 그 URL을 열고 `status: interrupted` 응답과 함께 멈춘다. 다른 에러면 한 번 더 시도하고 또 실패하면 그 에러를 돌려준다. 사용자가 그 창에서 로그인한 뒤 클라이언트가 응답의 `task_id`와 응답 `interrupt` 목록의 `id`를 키로 한 `answer`(e.g., `{"<id>": null}`)로 `resume_workflow`를 부르면 요청한 URL과 로그인 뒤 머문 페이지의 쿠키(Cookie)만 그 브라우저에서 모아 다시 받는다.
 
 ## 주의
 

@@ -84,7 +84,9 @@ workflows:
                 message: >
                   This site needs a signed-in session. Sign in to it in the
                   browser window that just opened, then call resume_workflow
-                  with this task_id and job_id to download with that session.
+                  with this task_id and an answer of {"<id>": null}, where <id>
+                  is the id in the interrupt list, to download with that
+                  session.
 
           - component: browser
             action: get-cookies
@@ -171,7 +173,9 @@ workflows:
                 message: >
                   This site needs a signed-in session. Sign in to it in the
                   browser window that just opened, then call resume_workflow
-                  with this task_id and job_id to fetch with that session.
+                  with this task_id and an answer of {"<id>": null}, where <id>
+                  is the id in the interrupt list, to fetch with that
+                  session.
 
           - component: browser
             action: get-cookies
