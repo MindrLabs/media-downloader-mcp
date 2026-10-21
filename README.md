@@ -6,7 +6,7 @@ A local MCP server that exposes [model-compose](https://github.com/hanyeol/model
 
 ## Quick Start
 
-You need [uv](https://docs.astral.sh/uv/) and [ffmpeg](https://ffmpeg.org/) on your `PATH`, a JS runtime such as [Deno](https://deno.com/) on your `PATH` for YouTube, and Google Chrome installed for sites that need you to sign in.
+You need [uv](https://docs.astral.sh/uv/), [Git](https://git-scm.com/) and [ffmpeg](https://ffmpeg.org/) on your `PATH`, a JS runtime such as [Deno](https://deno.com/) on your `PATH` for YouTube, and Google Chrome installed for sites that need you to sign in.
 
 Register the server in your MCP client config.
 
@@ -15,7 +15,7 @@ Register the server in your MCP client config.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ Register the server in your MCP client config.
 In Claude Code, one command registers it.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.2.0 media-downloader-mcp
 ```
 
 ## Flow
@@ -69,5 +69,3 @@ Each tool first tries without a browser, and if that fails with an error saying 
 ## Notice
 
 Many sites restrict downloads in their terms of service, and DRM-protected content cannot be downloaded. Check each site's terms and use this only for content you own or are allowed to download. This project is not affiliated with YouTube or any other supported site.
-
-<!-- mcp-name: io.github.MindrLabs/media-downloader-mcp -->
