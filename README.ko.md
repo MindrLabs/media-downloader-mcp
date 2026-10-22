@@ -15,7 +15,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.2", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@ MCP 클라이언트 설정에 서버를 등록한다.
 Claude Code에서는 명령 한 줄로 등록한다.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.1 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.2 media-downloader-mcp
 ```
 
 ## 흐름
@@ -37,10 +37,10 @@ claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLa
 MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
                               │
                               ├─ download_media     → yt-dlp ──성공──> file-store (local)
-                              │                          ├─로그인 필요──> Chrome 열기 → 중단 → resume_workflow → 쿠키 수집 → yt-dlp → file-store (local)
+                              │                          ├─로그인 필요──> Chrome 열기 → (쿠키 수집 → yt-dlp)를 최대 30번 반복 → file-store (local)
                               │                          └─기타 에러──> yt-dlp 재시도 → file-store (local)
                               └─ fetch_subtitles    → yt-dlp ──성공──> 자막 텍스트
-                                                         ├─로그인 필요──> Chrome 열기 → 중단 → resume_workflow → 쿠키 수집 → yt-dlp → 자막 텍스트
+                                                         ├─로그인 필요──> Chrome 열기 → (쿠키 수집 → yt-dlp)를 최대 30번 반복 → 자막 텍스트
                                                          └─기타 에러──> yt-dlp 재시도 → 자막 텍스트
 ```
 
@@ -50,7 +50,6 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 | :---: | --- | --- |
 | `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `text` |
-| `resume_workflow` | `task_id`, `answer` | 재개한 도구의 출력 |
 
 파일은 `MEDIA_DOWNLOAD_DIRECTORY`(기본 `~/Downloads/media`)에 `<run_id>.<확장자>` 이름으로 저장되고, 도구는 파일 내용 대신 `file://` URL만 돌려준다.
 
@@ -64,7 +63,7 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 
 ## 로그인이 필요한 사이트
 
-도구는 먼저 브라우저 없이 받아 보고, 로그인이 필요하다는 에러(Error)로 실패하면 Chrome 창에 그 URL을 열고 `status: interrupted` 응답과 함께 멈춘다. 다른 에러면 한 번 더 시도하고 또 실패하면 그 에러를 돌려준다. 사용자가 그 창에서 로그인한 뒤 클라이언트가 응답의 `task_id`와 응답 `interrupt` 목록의 `id`를 키로 한 `answer`(e.g., `{"<id>": null}`)로 `resume_workflow`를 부르면 요청한 URL과 로그인 뒤 머문 페이지의 쿠키(Cookie)만 그 브라우저에서 모아 다시 받는다.
+도구는 먼저 브라우저 없이 받아 보고, 로그인이 필요하다는 에러(Error)로 실패하면 Chrome 창에 그 URL을 연다. 창을 연 뒤에는 요청한 URL과 지금 머문 페이지의 쿠키(Cookie)만 그 브라우저에서 모아 다시 받는 것을 10초 간격으로 최대 30번 반복하므로 그 사이에 그 창에서 로그인하면 이어서 받는다. 그동안 도구 호출은 응답 없이 이어지고 시도마다 받는 시간도 더해지므로 MCP 클라이언트의 요청 타임아웃(Timeout)은 10분 이상으로 잡는다.
 
 ## 주의
 

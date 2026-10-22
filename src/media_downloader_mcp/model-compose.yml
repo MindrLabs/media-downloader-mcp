@@ -14,7 +14,8 @@ workflows:
       directory in the best available quality and return where the file
       was saved.
       When the site needs a signed-in session, a browser window opens and
-      the workflow pauses until the user signs in and it is resumed.
+      the workflow retries every 10 seconds, up to 30 times, until the
+      user signs in there.
     jobs:
       - id: download
         component: media-downloader
@@ -77,28 +78,28 @@ workflows:
             input:
               url: ${input.url}
 
-          - component: browser
-            action: get-current-url
-            interrupt:
-              before:
-                message: >
-                  This site needs a signed-in session. Sign in to it in the
-                  browser window that just opened, then call resume_workflow
-                  with this task_id and an answer of {"<id>": null}, where <id>
-                  is the id in the interrupt list, to download with that
-                  session.
-
-          - component: browser
-            action: get-cookies
-            input:
-              urls: [ "${input.url}", "${output}" ]
-
-          - component: media-downloader
-            action: download-with-cookies
+          - type: pipeline
             input:
               url: ${input.url}
               format: ${input.format}
-              cookies: ${output}
+            retry:
+              max_attempt_count: 30
+              delay: 10s
+            steps:
+              - component: browser
+                action: get-current-url
+
+              - component: browser
+                action: get-cookies
+                input:
+                  urls: [ "${input.url}", "${output}" ]
+
+              - component: media-downloader
+                action: download-with-cookies
+                input:
+                  url: ${input.url}
+                  format: ${input.format}
+                  cookies: ${output}
 
           - component: media-store
             input:
@@ -114,8 +115,8 @@ workflows:
       Fetch the subtitles of a video from any site yt-dlp supports,
       falling back to auto-generated captions, and return them as plain
       text. When the site needs a signed-in session, a browser window
-      opens and the workflow pauses until the user signs in and it is
-      resumed.
+      opens and the workflow retries every 10 seconds, up to 30 times,
+      until the user signs in there.
     jobs:
       - id: fetch
         component: subtitle-loader
@@ -166,28 +167,28 @@ workflows:
             input:
               url: ${input.url}
 
-          - component: browser
-            action: get-current-url
-            interrupt:
-              before:
-                message: >
-                  This site needs a signed-in session. Sign in to it in the
-                  browser window that just opened, then call resume_workflow
-                  with this task_id and an answer of {"<id>": null}, where <id>
-                  is the id in the interrupt list, to fetch with that
-                  session.
-
-          - component: browser
-            action: get-cookies
-            input:
-              urls: [ "${input.url}", "${output}" ]
-
-          - component: subtitle-loader
-            action: fetch-with-cookies
+          - type: pipeline
             input:
               url: ${input.url}
               language: ${input.language}
-              cookies: ${output}
+            retry:
+              max_attempt_count: 30
+              delay: 10s
+            steps:
+              - component: browser
+                action: get-current-url
+
+              - component: browser
+                action: get-cookies
+                input:
+                  urls: [ "${input.url}", "${output}" ]
+
+              - component: subtitle-loader
+                action: fetch-with-cookies
+                input:
+                  url: ${input.url}
+                  language: ${input.language}
+                  cookies: ${output}
         output:
           text: ${output[0].full_text as text}
 
