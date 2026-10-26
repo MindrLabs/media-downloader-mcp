@@ -15,7 +15,7 @@
   "mcpServers": {
     "media-downloader-mcp": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.2", "media-downloader-mcp"],
+      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3", "media-downloader-mcp"],
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +28,7 @@
 在 Claude Code 中用一条命令即可注册。
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.2 media-downloader-mcp
+claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3 media-downloader-mcp
 ```
 
 ## 流程

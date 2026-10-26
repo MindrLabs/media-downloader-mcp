@@ -1,17 +1,13 @@
 [project]
 name = "media-downloader-mcp"
-version = "0.3.2"
+version = "0.3.3"
 description = "Let Claude and other MCP clients download videos, audio and subtitles from any site yt-dlp supports."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = [
-    "model-compose>=0.4.119",
-    "playwright",
-    "pysubs2",
-    "webvtt-py",
-    "yt-dlp",
+    "model-compose>=0.4.120",
 ]
 
 [dependency-groups]
