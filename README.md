@@ -2,7 +2,7 @@
 
 # media-downloader-mcp
 
-A local MCP server that exposes [model-compose](https://github.com/hanyeol/model-compose) workflows as MCP tools, so MCP clients such as Claude can save videos, audio and subtitles from [any site yt-dlp supports](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), such as YouTube, Vimeo and SoundCloud, to your machine.
+A local MCP server that exposes [model-compose](https://github.com/hanyeol/model-compose) workflows as MCP tools, so MCP clients such as Claude can save videos and audio to your machine and fetch subtitles as text from [any site yt-dlp supports](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md), including YouTube, Vimeo and SoundCloud.
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ A local MCP server that exposes [model-compose](https://github.com/hanyeol/model
 | [Git](https://git-scm.com/) | Always | `PATH` |
 | [ffmpeg](https://ffmpeg.org/) | Always | `PATH` |
 | A JS runtime such as [Deno](https://deno.com/) | YouTube | `PATH` |
-| Google Chrome | Sites that need you to sign in | Installed |
+| Google Chrome | Sites that need you to sign in | Installed, or pick another browser with `MEDIA_DOWNLOAD_BROWSER_CHANNEL` |
 
 Install the server and run it once with empty input so it also installs its runtime packages.
 
@@ -20,13 +20,13 @@ Install the server and run it once with empty input so it also installs its runt
 
 ```bash
 # macOS and Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.4
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.5
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.4
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.5
 cmd /c "media-downloader-mcp < NUL"
 ```
 
@@ -72,7 +72,7 @@ MCP client ──stdio──> model-compose (mcp-server controller)
 | `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `text` |
 
-Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<run_id>.<extension>`, and the tools return only a `file://` URL instead of the file contents.
+Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<run_id>.<extension>`, and `download_media` returns only a `file://` URL instead of the file contents.
 
 ## Environment Variables
 
@@ -84,7 +84,7 @@ Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<
 
 ## Sites That Need Signing In
 
-Each tool first tries without a browser, and if that fails with an error saying you need to sign in, it opens the URL in a Chrome window. Once the window is open, the tool retries every 10 seconds, up to 30 times, with only the cookies that browser holds for the requested URL and the page it is on, so signing in there during that time lets the download go through. The tool call gets no response until then and each try adds its own download time, so set the MCP client's request timeout to 10 minutes or more.
+Each tool first tries without a browser, and if that fails with an error saying you need to sign in, it opens the URL in a browser window. Once the window is open, the tool retries every 10 seconds, up to 30 times, with only the cookies that browser holds for the requested URL and the page it is on, so signing in there during that time lets the download go through. The tool call gets no response until then and each try adds its own download time, so set the MCP client's request timeout to 10 minutes or more.
 
 ## Notice
 
