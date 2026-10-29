@@ -6,16 +6,37 @@ A local MCP server that exposes [model-compose](https://github.com/hanyeol/model
 
 ## Quick Start
 
-You need [uv](https://docs.astral.sh/uv/), [Git](https://git-scm.com/) and [ffmpeg](https://ffmpeg.org/) on your `PATH`, a JS runtime such as [Deno](https://deno.com/) on your `PATH` for YouTube, and Google Chrome installed for sites that need you to sign in.
+| Tool | Needed for | Where |
+| :---: | :---: | --- |
+| [uv](https://docs.astral.sh/uv/) | Always | `PATH`, then run `uv tool update-shell` to add its tool directory to `PATH` |
+| [Git](https://git-scm.com/) | Always | `PATH` |
+| [ffmpeg](https://ffmpeg.org/) | Always | `PATH` |
+| A JS runtime such as [Deno](https://deno.com/) | YouTube | `PATH` |
+| Google Chrome | Sites that need you to sign in | Installed |
 
-Register the server in your MCP client config.
+Install the server and run it once with empty input so it also installs its runtime packages.
+
+> Installing the runtime packages first keeps the first connection from timing out.
+
+```bash
+# macOS and Linux
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+media-downloader-mcp < /dev/null
+```
+
+```powershell
+# Windows
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+cmd /c "media-downloader-mcp < NUL"
+```
+
+Register the installed command in your MCP client config.
 
 ```json
 {
   "mcpServers": {
     "media-downloader-mcp": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3", "media-downloader-mcp"],
+      "command": "media-downloader-mcp",
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +49,7 @@ Register the server in your MCP client config.
 In Claude Code, one command registers it.
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3 media-downloader-mcp
+claude mcp add media-downloader-mcp -- media-downloader-mcp
 ```
 
 ## Flow

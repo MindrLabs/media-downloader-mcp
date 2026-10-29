@@ -6,16 +6,37 @@
 
 ## 快速开始
 
-`PATH` 中需要有 [uv](https://docs.astral.sh/uv/)、[Git](https://git-scm.com/) 和 [ffmpeg](https://ffmpeg.org/)，下载 YouTube 还需要 `PATH` 中有 [Deno](https://deno.com/) 等 JS 运行时，需要登录的网站还要求安装 Google Chrome。
+| 工具 | 何时需要 | 位置 |
+| :---: | :---: | --- |
+| [uv](https://docs.astral.sh/uv/) | 始终 | `PATH`，并用 `uv tool update-shell` 把工具目录也加入 `PATH` |
+| [Git](https://git-scm.com/) | 始终 | `PATH` |
+| [ffmpeg](https://ffmpeg.org/) | 始终 | `PATH` |
+| [Deno](https://deno.com/) 等 JS 运行时 | YouTube | `PATH` |
+| Google Chrome | 需要登录的网站 | 安装即可 |
 
-在 MCP 客户端配置中注册服务器。
+安装服务器，并用空输入运行一次，把运行时包也提前装好。
+
+> 提前装好运行时包，首次连接才不会超时。
+
+```bash
+# macOS 和 Linux
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+media-downloader-mcp < /dev/null
+```
+
+```powershell
+# Windows
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+cmd /c "media-downloader-mcp < NUL"
+```
+
+在 MCP 客户端配置中注册安装好的命令。
 
 ```json
 {
   "mcpServers": {
     "media-downloader-mcp": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3", "media-downloader-mcp"],
+      "command": "media-downloader-mcp",
       "env": {
         "MEDIA_DOWNLOAD_DIRECTORY": "~/Downloads/media",
         "MEDIA_DOWNLOAD_BROWSER_PROFILE": "/absolute/path/to/browser-profile"
@@ -28,7 +49,7 @@
 在 Claude Code 中用一条命令即可注册。
 
 ```bash
-claude mcp add media-downloader-mcp -- uvx --from git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3 media-downloader-mcp
+claude mcp add media-downloader-mcp -- media-downloader-mcp
 ```
 
 ## 流程
