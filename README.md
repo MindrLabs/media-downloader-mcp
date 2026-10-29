@@ -20,13 +20,13 @@ Install the server and run it once with empty input so it also installs its runt
 
 ```bash
 # macOS and Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.4
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.3
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.4
 cmd /c "media-downloader-mcp < NUL"
 ```
 
