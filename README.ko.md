@@ -2,21 +2,21 @@
 
 # media-downloader-mcp
 
-[model-compose](https://github.com/hanyeol/model-compose) 워크플로(Workflow)를 MCP 도구로 노출해 Claude 같은 MCP 클라이언트(Client)가 YouTube, Vimeo, SoundCloud 등 [yt-dlp가 지원하는 사이트](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)의 영상과 음성은 사용자 PC에 받고 자막은 텍스트로 가져오게 하는 로컬(Local) MCP 서버(Server)다.
+[model-compose](https://github.com/hanyeol/model-compose) 워크플로를 MCP 도구로 노출해 Claude 같은 MCP 클라이언트가 YouTube, Vimeo, SoundCloud 등 [yt-dlp가 지원하는 사이트](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)의 영상과 음성은 사용자 PC에 받고 자막은 텍스트로 가져오게 하는 로컬 MCP 서버다.
 
 ## 빠른 시작
 
 | 도구 | 필요한 경우 | 위치 |
 | :---: | :---: | --- |
-| [uv](https://docs.astral.sh/uv/) | 항상 | `PATH`, `uv tool update-shell`로 도구 디렉터리(Directory)도 `PATH`에 추가 |
+| [uv](https://docs.astral.sh/uv/) | 항상 | `PATH`, `uv tool update-shell`로 도구 디렉터리도 `PATH`에 추가 |
 | [Git](https://git-scm.com/) | 항상 | `PATH` |
 | [ffmpeg](https://ffmpeg.org/) | 항상 | `PATH` |
-| [Deno](https://deno.com/) 같은 JS 런타임(Runtime) | YouTube | `PATH` |
-| Google Chrome | 로그인이 필요한 사이트 | 설치만, 다른 브라우저(Browser)는 `MEDIA_DOWNLOAD_BROWSER_CHANNEL`로 선택 |
+| [Deno](https://deno.com/) 같은 JS 런타임 | YouTube | `PATH` |
+| Google Chrome | 로그인이 필요한 사이트 | 설치만, 다른 브라우저는 `MEDIA_DOWNLOAD_BROWSER_CHANNEL`로 선택 |
 
-서버를 설치하고 빈 입력으로 한 번 실행해 런타임 패키지(Package)까지 미리 설치한다.
+서버를 설치하고 빈 입력으로 한 번 실행해 런타임 패키지까지 미리 설치한다.
 
-> 런타임 패키지를 미리 설치해야 첫 연결이 타임아웃(Timeout)에 걸리지 않는다.
+> 런타임 패키지를 미리 설치해야 첫 연결이 타임아웃에 걸리지 않는다.
 
 ```bash
 # macOS·Linux
@@ -79,12 +79,12 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 | 환경 변수 | 기본값 | 내용 |
 | :---: | :---: | --- |
 | `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | 파일 저장 위치 |
-| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | 로그인 상태를 저장할 브라우저 프로필(Profile) 디렉터리의 절대 경로. 비우면 서버가 꺼질 때 로그인 상태도 사라진다 |
+| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | 로그인 상태를 저장할 브라우저 프로필 디렉터리의 절대 경로. 비우면 서버가 꺼질 때 로그인 상태도 사라진다 |
 | `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | 띄울 브라우저(`chrome`, `msedge` 등) |
 
 ## 로그인이 필요한 사이트
 
-도구는 먼저 브라우저 없이 받아 보고 로그인이 필요하다는 에러(Error)로 실패하면 브라우저 창에 그 URL을 연다. 창을 연 뒤에는 요청한 URL과 지금 머문 페이지의 쿠키(Cookie)만 그 브라우저에서 모아 다시 받는 것을 10초 간격으로 최대 30번 반복하므로 그 사이에 그 창에서 로그인하면 이어서 받는다. 그동안 도구 호출은 응답 없이 이어지고 시도마다 받는 시간도 더해지므로 MCP 클라이언트의 요청 타임아웃은 10분 이상으로 잡는다.
+도구는 먼저 브라우저 없이 받아 보고 로그인이 필요하다는 에러로 실패하면 브라우저 창에 그 URL을 연다. 창을 연 뒤에는 요청한 URL과 지금 머문 페이지의 쿠키만 그 브라우저에서 모아 다시 받는 것을 10초 간격으로 최대 30번 반복하므로 그 사이에 그 창에서 로그인하면 이어서 받는다. 그동안 도구 호출은 응답 없이 이어지고 시도마다 받는 시간도 더해지므로 MCP 클라이언트의 요청 타임아웃은 10분 이상으로 잡는다.
 
 ## 주의
 
