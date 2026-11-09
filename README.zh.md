@@ -72,7 +72,7 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 | `download_media` | `url`、`format`（视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav`，默认 `mp4`） | `file_url` |
 | `fetch_subtitles` | `url`、`language`（ISO 639-1，默认 `en`） | `text` |
 
-文件以 `<run_id>.<扩展名>` 的名字保存在 `MEDIA_DOWNLOAD_DIRECTORY`（默认 `~/Downloads/media`）中，`download_media` 只返回 `file://` URL，不返回文件内容。
+文件以 `<run_id>.<扩展名>` 的名字保存在 `MEDIA_DOWNLOAD_DIRECTORY` 中，`download_media` 只返回 `file://` URL，不返回文件内容。
 
 ## 环境变量
 

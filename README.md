@@ -72,7 +72,7 @@ MCP client ──stdio──> model-compose (mcp-server controller)
 | `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `text` |
 
-Files land in `MEDIA_DOWNLOAD_DIRECTORY` (defaults to `~/Downloads/media`) as `<run_id>.<extension>`, and `download_media` returns only a `file://` URL instead of the file contents.
+Files land in `MEDIA_DOWNLOAD_DIRECTORY` as `<run_id>.<extension>`, and `download_media` returns only a `file://` URL instead of the file contents.
 
 ## Environment Variables
 

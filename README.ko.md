@@ -72,7 +72,7 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 | `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url` |
 | `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `text` |
 
-파일은 `MEDIA_DOWNLOAD_DIRECTORY`(기본 `~/Downloads/media`)에 `<run_id>.<확장자>` 이름으로 저장되고 `download_media`는 파일 내용 대신 `file://` URL만 돌려준다.
+파일은 `MEDIA_DOWNLOAD_DIRECTORY`에 `<run_id>.<확장자>` 이름으로 저장되고 `download_media`는 파일 내용 대신 `file://` URL만 돌려준다.
 
 ## 환경 변수
 
