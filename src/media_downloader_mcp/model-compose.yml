@@ -8,7 +8,7 @@ workflows:
   - id: download-media
     name: download_media
     title: Download a video or its audio
-    description: Let Claude and other MCP clients download videos, audio and subtitles from any site.
+    description: Let Claude and other MCP clients download videos and audio from any site.
     jobs:
       - id: download
         component: media-downloader
