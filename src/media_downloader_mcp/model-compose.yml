@@ -8,14 +8,7 @@ workflows:
   - id: download-media
     name: download_media
     title: Download a video or its audio
-    description: >
-      Download a video, or only its audio track, from any site yt-dlp
-      supports such as YouTube, Vimeo or SoundCloud to the local download
-      directory in the best available quality and return where the file
-      was saved.
-      When the site needs a signed-in session, a browser window opens and
-      the workflow retries every 10 seconds, up to 30 times, until the
-      user signs in there.
+    description: Let Claude and other MCP clients download videos, audio and subtitles from any site.
     jobs:
       - id: download
         component: media-downloader

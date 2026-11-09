@@ -1,7 +1,7 @@
 [project]
 name = "media-downloader-mcp"
 version = "0.3.5"
-description = "Let Claude and other MCP clients download videos, audio and subtitles from any site yt-dlp supports."
+description = "Let Claude and other MCP clients download videos, audio and subtitles from any site."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
