@@ -20,13 +20,13 @@
 
 ```bash
 # macOS·Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.6
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.7
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.6
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.7
 cmd /c "media-downloader-mcp < NUL"
 ```
 

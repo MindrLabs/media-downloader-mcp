@@ -104,12 +104,7 @@ workflows:
   - id: fetch-subtitles
     name: fetch_subtitles
     title: Fetch the subtitles of a video
-    description: >
-      Fetch the subtitles of a video from any site yt-dlp supports,
-      falling back to auto-generated captions, and return them as plain
-      text. When the site needs a signed-in session, a browser window
-      opens and the workflow retries every 10 seconds, up to 30 times,
-      until the user signs in there.
+    description: Let Claude and other MCP clients fetch subtitles as text from any site.
     jobs:
       - id: fetch
         component: subtitle-loader
