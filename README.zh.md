@@ -20,13 +20,13 @@
 
 ```bash
 # macOS 和 Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 cmd /c "media-downloader-mcp < NUL"
 ```
 
@@ -67,20 +67,22 @@ MCP 客户端 ──stdio──> model-compose (mcp-server 控制器)
 
 ## 工具
 
-| 工具 | 输入 | 输出 |
-| :---: | --- | --- |
-| `download_media` | `url`、`format`（视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav`，默认 `mp4`） | `file_url` |
-| `fetch_subtitles` | `url`、`language`（ISO 639-1，默认 `en`） | `text` |
+| 工具 | 输入 | 默认值 | 示例 | 输出 |
+| :---: | --- | --- | --- | --- |
+| `download_media` | `url` | | | `file_url` |
+| `download_media` | `format` | `mp4` | 视频为 `mp4`、`webm` 或 `mkv`，仅音频为 `mp3`、`m4a`、`opus`、`flac` 或 `wav` | `file_url` |
+| `fetch_subtitles` | `url` | | | `text` |
+| `fetch_subtitles` | `language` | `en` | ISO 639-1 | `text` |
 
 文件以 `<run_id>.<扩展名>` 的名字保存在 `MEDIA_DOWNLOAD_DIRECTORY` 中，`download_media` 只返回 `file://` URL，不返回文件内容。
 
 ## 环境变量
 
-| 环境变量 | 默认值 | 说明 |
-| :---: | :---: | --- |
-| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | 文件保存位置 |
-| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | 用于保持登录状态的浏览器配置目录的绝对路径。留空时服务器停止后登录状态也会丢失 |
-| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | 要打开的浏览器（`chrome`、`msedge` 等） |
+| 环境变量 | 默认值 | 示例 | 说明 |
+| :---: | :---: | --- | --- |
+| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | | 文件保存位置 |
+| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | | 用于保持登录状态的浏览器配置目录的绝对路径。留空时服务器停止后登录状态也会丢失 |
+| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | `chrome`、`msedge` 等 | 要打开的浏览器 |
 
 ## 需要登录的网站
 

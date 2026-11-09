@@ -20,13 +20,13 @@
 
 ```bash
 # macOS·Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 cmd /c "media-downloader-mcp < NUL"
 ```
 
@@ -67,20 +67,22 @@ MCP 클라이언트 ──stdio──> model-compose (mcp-server 컨트롤러)
 
 ## 도구
 
-| 도구 | 입력 | 출력 |
-| :---: | --- | --- |
-| `download_media` | `url`, `format`(영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav`, 기본 `mp4`) | `file_url` |
-| `fetch_subtitles` | `url`, `language`(ISO 639-1, 기본 `en`) | `text` |
+| 도구 | 입력 | 기본값 | 예시 | 출력 |
+| :---: | --- | --- | --- | --- |
+| `download_media` | `url` | | | `file_url` |
+| `download_media` | `format` | `mp4` | 영상 `mp4`·`webm`·`mkv`, 음성만 `mp3`·`m4a`·`opus`·`flac`·`wav` | `file_url` |
+| `fetch_subtitles` | `url` | | | `text` |
+| `fetch_subtitles` | `language` | `en` | ISO 639-1 | `text` |
 
 파일은 `MEDIA_DOWNLOAD_DIRECTORY`에 `<run_id>.<확장자>` 이름으로 저장되고 `download_media`는 파일 내용 대신 `file://` URL만 돌려줍니다.
 
 ## 환경 변수
 
-| 환경 변수 | 기본값 | 내용 |
-| :---: | :---: | --- |
-| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | 파일 저장 위치 |
-| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | 로그인 상태를 저장할 브라우저 프로필 디렉터리의 절대 경로. 비우면 서버가 꺼질 때 로그인 상태도 사라집니다 |
-| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | 띄울 브라우저(`chrome`, `msedge` 등) |
+| 환경 변수 | 기본값 | 예시 | 내용 |
+| :---: | :---: | --- | --- |
+| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | | 파일 저장 위치 |
+| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | | 로그인 상태를 저장할 브라우저 프로필 디렉터리의 절대 경로. 비우면 서버가 꺼질 때 로그인 상태도 사라집니다 |
+| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | `chrome`, `msedge` 등 | 띄울 브라우저 |
 
 ## 로그인이 필요한 사이트
 

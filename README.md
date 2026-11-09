@@ -20,13 +20,13 @@ Install the server and run it once with empty input so it also installs its runt
 
 ```bash
 # macOS and Linux
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 media-downloader-mcp < /dev/null
 ```
 
 ```powershell
 # Windows
-uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.8
+uv tool install git+https://github.com/MindrLabs/media-downloader-mcp@v0.3.9
 cmd /c "media-downloader-mcp < NUL"
 ```
 
@@ -67,20 +67,22 @@ MCP client ──stdio──> model-compose (mcp-server controller)
 
 ## Tools
 
-| Tool | Input | Output |
-| :---: | --- | --- |
-| `download_media` | `url`, `format` (`mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only, defaults to `mp4`) | `file_url` |
-| `fetch_subtitles` | `url`, `language` (ISO 639-1, defaults to `en`) | `text` |
+| Tool | Input | Default | Example | Output |
+| :---: | --- | --- | --- | --- |
+| `download_media` | `url` | | | `file_url` |
+| `download_media` | `format` | `mp4` | `mp4`, `webm` or `mkv` for video, `mp3`, `m4a`, `opus`, `flac` or `wav` for audio only | `file_url` |
+| `fetch_subtitles` | `url` | | | `text` |
+| `fetch_subtitles` | `language` | `en` | ISO 639-1 | `text` |
 
 Files land in `MEDIA_DOWNLOAD_DIRECTORY` as `<run_id>.<extension>`, and `download_media` returns only a `file://` URL instead of the file contents.
 
 ## Environment Variables
 
-| Environment variable | Default | Description |
-| :---: | :---: | --- |
-| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | Where files are saved |
-| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | Absolute path of a browser profile directory that keeps you signed in. When empty, the sign-in is lost when the server stops |
-| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | Browser to open (`chrome`, `msedge` and so on) |
+| Environment variable | Default | Example | Description |
+| :---: | :---: | --- | --- |
+| `MEDIA_DOWNLOAD_DIRECTORY` | `~/Downloads/media` | | Where files are saved |
+| `MEDIA_DOWNLOAD_BROWSER_PROFILE` | ✗ | | Absolute path of a browser profile directory that keeps you signed in. When empty, the sign-in is lost when the server stops |
+| `MEDIA_DOWNLOAD_BROWSER_CHANNEL` | `chrome` | `chrome`, `msedge` and so on | Browser to open |
 
 ## Sites That Need Signing In
 

@@ -1,6 +1,6 @@
 [project]
 name = "media-downloader-mcp"
-version = "0.3.8"
+version = "0.3.9"
 description = "Let Claude and other MCP clients download videos, audio and subtitles from any site."
 readme = "README.md"
 license = "MIT"
